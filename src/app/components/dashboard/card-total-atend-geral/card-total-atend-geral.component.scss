@@ -1,0 +1,50 @@
+.card {
+  display: flex;
+  align-items: center; /* Alinha o ícone e o conteúdo verticalmente */
+}
+
+.icon-wrapper {
+  margin-right: 15px; /* Espaço entre o ícone e o conteúdo */
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: transparent;
+  text-align: center;
+  line-height: 60px;
+  position: relative; /* Para manter o ícone dentro do círculo */
+}
+
+.icon-wrapper .icon-wrapper-bg {
+  position: absolute;
+  top: 0; /* Garantir que o fundo comece do topo */
+  left: 0;
+  width: 100%; /* O fundo vai preencher toda a área do wrapper */
+  height: 100%;
+  border-radius: 50%; /* Deixar o círculo perfeito */
+  z-index: 1;
+  background-color: #107ef4; /* Defina a cor desejada aqui */
+}
+
+.opacity-10 {
+  opacity: 0.1;
+}
+
+.opacity-8 {
+  opacity: 0.8;
+}
+
+.text-dark {
+  color: #343a40; /* Cor do texto escuro */
+}
+
+.icon-wrapper i {
+  font-size: 24px;
+  z-index: 2;
+  position: relative; /* O ícone está dentro do wrapper */
+  line-height: inherit;
+}
+
+.widget-chart-content {
+  display: inline-block;
+}

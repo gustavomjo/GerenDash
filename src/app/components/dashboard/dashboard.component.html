@@ -1,9 +1,74 @@
+<div class="card mb-3">
+  <!-- <section class="card-header-tab card-header">
+    <h2 class="card-header-title font-size-lg text-capitalize font-weight-normal">
+      <i class="header-icon lnr-charts icon-gradient bg-happy-green" aria-hidden="true"></i>
+      Portfolio Performance
+    </h2>
+    <div class="btn-actions-pane-right text-capitalize">
+      <button class="btn btn-outline-focus btn-sm btn-wide btn-outline-2x mr-md-2">View All</button>
+    </div>
+  </section> -->
+
+  <section class="row no-gutters">
+    <!-- Cash Deposits -->
+
+    <article class="col-sm-6 col-md-4 col-xl-4">
+      <app-card-total-atend-geral></app-card-total-atend-geral>
+    </article>
+
+
+    <!-- Invested Dividends -->
+    <article class="col-sm-6 col-md-4 col-xl-4">
+      <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+        <div class="icon-wrapper rounded-circle">
+          <div class="icon-wrapper-bg opacity-9 bg-danger"></div>
+          <i class="lnr-graduation-hat text-white" aria-hidden="true"></i>
+        </div>
+        <div class="widget-chart-content">
+          <p class="widget-subheading">Invested Dividends</p>
+          <h3 class="widget-numbers">9M</h3>
+          <div class="widget-description opacity-8 text-focus">
+            Grow Rate:
+            <span class="text-info pl-1">
+              <i class="fa fa-angle-down" aria-hidden="true"></i>
+              14.1%
+            </span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Capital Gains -->
+    <article class="col-sm-12 col-md-4 col-xl-4">
+      <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+        <div class="icon-wrapper rounded-circle">
+          <div class="icon-wrapper-bg opacity-9 bg-success"></div>
+          <i class="lnr-apartment text-white" aria-hidden="true"></i>
+        </div>
+        <div class="widget-chart-content">
+          <p class="widget-subheading">Capital Gains</p>
+          <h3 class="widget-numbers text-success">$563</h3>
+          <div class="widget-description text-focus">
+            Increased by
+            <span class="text-warning pl-1">
+              <i class="fa fa-angle-up" aria-hidden="true"></i>
+              7.35%
+            </span>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+</div>
+
+
 <div class="row">
   <div class="col-sm-12 col-md-6 col-xl-4">
     <app-card-tot-atend-clinica-medico-dia></app-card-tot-atend-clinica-medico-dia>
   </div>
   <div class="col-sm-12 col-md-6 col-xl-4">
-    <app-card-total-atend-geral></app-card-total-atend-geral>
+
   </div>
 </div>
 

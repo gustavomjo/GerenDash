@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CookieService } from './../../../cookie.service';
 import { DashboardService } from '../../../services/dashboard/dashboard.service';
 import { globalVars } from '../../../global/globalVars';
 import { globalData } from '../../../global/global-data';
@@ -21,11 +20,8 @@ export class CardTotAtendClinicaMedicoDiaComponent implements OnInit{
   card : any[]=[];
 
   constructor(
-    private cookieService: CookieService,
     private Dashboard: DashboardService
-  ) {
-    globalVars.cookieValue = this.cookieService.getCookie('ck_chave') || '';
-  }
+  ) { }
   ngOnInit(): void {
     this.getTotAtendClinicaMedicoDia();
   }
@@ -35,7 +31,6 @@ export class CardTotAtendClinicaMedicoDiaComponent implements OnInit{
   async getTotAtendClinicaMedicoDia() {
     (await this.Dashboard.getTotAtendClinicaMedicoDia(globalVars.cookieValue)).subscribe(dados => {
       this.card = this.card.concat(dados.body);
-
       let mes_ano_atual = globalData.gbAno + '-' + globalData.gbMes_atual;
       let mes_ano_passado = Number(globalData.gbAno - 1) + '-' + globalData.gbMes_atual;
       let lstMesAnoAtual: any[] = [];
