@@ -1,0 +1,109 @@
+// #heatmap {
+//   display: flex;
+//   flex-direction: column; /* Organiza os elementos 'line' em uma coluna */
+// }
+
+// .line {
+//   display: flex;
+//   flex-direction: row; /* Organiza os elementos filhos lado a lado */
+//   // color: blue;
+//   // font-size: 18px;
+//   // background-color: lightgray;
+//   // height: 80px;
+//   height: 27px;
+
+//   // padding: 10px;
+//   // border: 1px solid black;
+//   border-radius: 5px;
+//   // gap: 5px; /* Espaçamento entre os itens */
+// }
+
+// .line > div {
+//   position: relative;
+//   left: 10px;
+//   // border:1px solid #58595c20;
+//   // background-color: #58595c10; /* Cor de fundo para os itens filhos */
+//   padding: 5px;
+//   border-radius: 3px;
+// }
+
+// .item-container {
+//   display: flex;
+//   flex-direction: column; /* Organiza a legenda e o conteúdo em coluna */
+//   align-items: center; /* Centraliza os itens horizontalmente */
+// }
+
+// .item-label {
+//   font-size: 18px; /* Tamanho da fonte da legenda */
+//   color: rgb(0, 0, 0); /* Cor da legenda */
+//   margin-bottom: 5px; /* Espaçamento abaixo da legenda */
+// }
+
+// .quadrado {
+//   width: 20px;
+//   height: 20px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   // background-color: lightyellow; /* Cor de fundo dos quadrados */
+//   // border: 1px solid black; /* Borda dos quadrados */
+
+//   background-color: #58595c10; /* Cor de fundo dos quadrados */
+//   border: 1px solid #58595c20; /* Borda dos quadrados */
+//   border-radius: 3px; /* Bordas arredondadas */
+// }
+
+// .space{
+
+//   width: 20px;
+//   height: 20px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+
+
+// }
+
+// .medico {
+//   position: relative; /* Define o contêiner como relativo para que o texto possa ser posicionado dentro dele */
+//   // width: fit-content;
+
+//   // background-color: rgba(0, 169, 80); /* Cor de fundo */
+//   color: rgb(0, 0, 0); /* Cor do texto */
+//   padding: 10px; /* Espaçamento interno, ajuste conforme necessário */
+// }
+
+
+
+// .panel {
+//   visibility: hidden; /* Começa invisível */
+//   position: absolute;
+//   background-color: #333;
+//   color: #fff;
+//   text-align: center;
+//   border-radius: 4px;
+//   padding: 5px;
+//   z-index: 1000;
+//   bottom: -10px; /* Ajuste a posição vertical */
+//   left: 100px;
+//   margin-left: -60px; /* Centro o tooltip */
+//   opacity: 0; /* Torna o tooltip transparente */
+//   transition: opacity 0.3s; /* Transição suave */
+//   white-space: nowrap; /* Evita quebra de linha no tooltip */
+// }
+
+// .item-container:hover .panel {
+//   visibility: visible; /* Torna visível ao passar o mouse */
+//   opacity: 1; /* Torna o tooltip opaco */
+// }
+
+// .panel::after {
+//   content: '';
+//   position: absolute;
+//   // top: 100%; /* Posiciona a seta no fundo do tooltip */
+//   left: 50%;
+//   margin-left: -5px;
+//   border-width: 5px;
+//   border-style: solid;
+//   border-color: #333 transparent transparent transparent; /* Cor da seta */
+// }

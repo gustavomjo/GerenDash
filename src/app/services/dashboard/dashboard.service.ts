@@ -1,9 +1,10 @@
-import { CookieService } from './../../cookie.service';
+import { CookieService } from '../cookie.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../config.service';
 import { tot_atend_clinica_medico_dia } from '../../models/dashboard/tot-atend-clinica-medico-dia.model';
 import { Busca } from '../../global/globals.services';
+import { atend_mapa_calor_semana } from '../../models/dashboard/atend-mapa-calor-semana.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,10 +25,11 @@ export class DashboardService {
   async getTotAtendClinicaMedicoDia(chave: string) {
     // console.log(this.url)
     return await this.Busca.getHtml<tot_atend_clinica_medico_dia[]>(`/getTotAtendClinicaMedicoDia/${chave}`);
+  }
 
-
-
-    // return this.httpClient.get<tot_atend_clinica_medico_dia[]>(`${this.url}/getTotAtendClinicaMedicoDia/${chave}`);
+  async getAtendMapaCalorSemana(chave: string) {
+    // console.log(this.url)
+    return await this.Busca.getHtml<atend_mapa_calor_semana[]>(`/getAtendMapaCalorSemana/${chave}`);
   }
 
 }

@@ -1,4 +1,4 @@
-import { CookieService } from './../../cookie.service';
+import { CookieService } from '../cookie.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../config.service';

@@ -1,7 +1,7 @@
 import { globalVars } from './../../global/globalVars';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
-import { CookieService } from './../../cookie.service';
+import { CookieService } from '../../services/cookie.service';
 import { CommonModule } from '@angular/common';
 import { LoginService } from '../../services/login/login.service';
 import { HttpClientModule } from '@angular/common/http'; // Importar o HttpClientModule

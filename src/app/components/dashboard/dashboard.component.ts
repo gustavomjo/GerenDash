@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { CardTotAtendClinicaMedicoDiaComponent } from "./card-tot-atend-clinica-medico-dia/card-tot-atend-clinica-medico-dia.component";
 import { CardTotalAtendGeralComponent } from "./card-total-atend-geral/card-total-atend-geral.component";
 
-import { CookieService } from './../../cookie.service';
+import { CookieService } from '../../services/cookie.service';
 import { globalVars } from '../../global/globalVars';
+import { AtendMapaCalorSemanaComponent } from "./atend-mapa-calor-semana/atend-mapa-calor-semana.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CardTotAtendClinicaMedicoDiaComponent, CardTotalAtendGeralComponent],
+  imports: [CardTotAtendClinicaMedicoDiaComponent, CardTotalAtendGeralComponent, AtendMapaCalorSemanaComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
