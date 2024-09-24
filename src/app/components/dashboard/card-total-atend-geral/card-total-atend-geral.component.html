@@ -1,17 +1,49 @@
-<div class="rm-border bg-transparent widget-chart text-left d-flex align-items-center">
-  <div class="icon-wrapper rounded-circle mr-3">
-    <div class="icon-wrapper-bg opacity-10"></div>
-    <i class='bx bx-clinic lnr-laptop-phone text-dark opacity-8'></i>
-  </div>
-  <div class="widget-chart-content">
-    <h4 class="widget-subheading">Atendimentos</h4>
-    <h3 class="widget-numbers">{{total}}</h3>
-    <div class="widget-description opacity-8 text-focus">
-      <span class="text-danger pr-1">
-        <i class='bx bx-clinic'></i>
-        54.1%
-      </span>
-      less earnings
+
+
+<!-- <i class='bx bx-heart' style='font-size: 24px; color: #007bff;'></i>
+<i class='bx bx-run' style='font-size: 24px; color: #007bff;'></i>
+<i class="fas fa-heartbeat" style="font-size: 24px; color: #007bff;"></i>
+<i class="fas fa-running" style="font-size: 24px; color: #007bff;"></i> -->
+
+
+
+
+
+<section class="row no-gutters" id="cards" *ngIf="!shouldSlide()">
+  <!-- Cash Deposits -->
+  <article class="col-sm-6 col-md-4" *ngFor="let entry of groupedMedico | keyvalue">
+    <div class="col-12" [ngClass]="{ 'slide': shouldSlide() }">
+      <div class="rm-border bg-transparent widget-chart text-left d-flex align-items-center">
+        <div class="icon-wrapper rounded-circle mr-3">
+          <div class="icon-wrapper-bg opacity-10"></div>
+          <i [ngClass]="getMedicoIcon(entry.value.medico)" class="text-dark opacity-8"></i>
+        </div>
+        <div class="widget-chart-content">
+          <h4 class="widget-subheading">{{ entry.value.medico }}</h4>
+          <h3 class="widget-numbers">{{ entry.value.total }}</h3>
+        </div>
+      </div>
     </div>
+  </article>
+
+</section>
+
+<div class="partners-logo-slider" *ngIf="shouldSlide()">
+  <!-- <p class="sliderTitle">Trusted by 200,000+ leading organizations</p> -->
+  <div class="slide-track" id="dvSlide">
+    <div *ngFor="let medico of groupedMedico | keyvalue" class="col-2" [ngClass]="{'slide': shouldSlide()}">
+      <div class="rm-border bg-transparent widget-chart text-left d-flex align-items-center">
+        <div class=" icon-wrapper rounded-circle mr-3">
+          <div class="icon-wrapper-bg opacity-10"></div>
+          <i [ngClass]="getMedicoIcon(medico.value.medico)" class="text-dark opacity-8"></i>
+        </div>
+        <div class="widget-chart-content">
+          <h4 class="widget-subheading">{{ medico.value.medico }}</h4>
+          <h3 class="widget-numbers">{{ medico.value.total }}</h3>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
+

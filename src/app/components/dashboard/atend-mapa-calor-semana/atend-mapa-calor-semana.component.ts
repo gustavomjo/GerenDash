@@ -4,6 +4,7 @@ import { DashboardService } from '../../../services/dashboard/dashboard.service'
 import { globalVars } from '../../../global/globalVars';
 import { Chart, registerables } from 'chart.js';
 import { CommonModule } from '@angular/common';
+import { globalCores } from '../../../global/global-cores';
 
 Chart.register(...registerables);
 
@@ -34,52 +35,95 @@ export class AtendMapaCalorSemanaComponent implements OnInit,AfterViewInit {
     (await this.Dashboard.getAtendMapaCalorSemana(globalVars.cookieValue)).subscribe(dados => {
       // Concatena os dados recebidos ao mapa atual
       this.mapa = this.mapa.concat(dados.body);
+      // Semana como labels do gráfico
+      // console.log(this.mapa)
 
-      const groupedData = this.mapa.reduce((acc: any, item) => {
-        if (!acc[item.nome_medico]) {
-          acc[item.nome_medico] = [];
-        }
-        acc[item.nome_medico].push(item);
-        return acc;
-      }, {});
+      // Definição da semana
+        const semana = [ 'Domingo', 'Segunda-feira', 'Terca-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sabado'];
 
-      console.log(groupedData);
-      this.createChart(groupedData);
+        // Criando o objeto agrupado por 'nome_medico'
+        const groupedData = this.mapa.reduce((acc: any, item) => {
+          const medico = item.nome_medico.trim(); // Remove espaços em branco do nome do médico
+          const diaSemana = item.nome_dia_semana.trim(); // Remove espaços em branco do nome do dia da semana
+
+          if (!acc[medico]) {
+            acc[medico] = [];
+          }
+          acc[medico].push({
+            ...item,
+            nome_dia_semana: diaSemana // Remove espaços em branco do nome do dia da semana
+          });
+          return acc;
+        }, {});
+
+        // Iterando sobre cada médico
+        Object.keys(groupedData).forEach(medico => {
+          const items = groupedData[medico];
+
+          // Cria um conjunto com os dias da semana presentes para o médico atual
+          const diasPresentes = new Set(items.map((item: { nome_dia_semana: string }) => item.nome_dia_semana));
+
+          // Adiciona os dias da semana ausentes
+          semana.forEach(dia => {
+            const trimmedDia = dia.trim(); // Remove espaços em branco do dia
+
+            if (!diasPresentes.has(trimmedDia)) {
+              // Adiciona um novo item com o dia ausente
+              items.push({
+                nome_dia_semana: trimmedDia,
+                nome_medico: medico,
+                dia_semana: semana.indexOf(trimmedDia),
+                total_contador: 0 // Valor padrão para 'total_contador'
+              });
+            }
+          });
+
+          // Ordena os itens conforme a semana
+          groupedData[medico] = items.sort((a: { dia_semana: number }, b: { dia_semana: number }) => a.dia_semana - b.dia_semana);
+        });
+
+      // Criando datasets dinâmicos para o Chart.js
+      const arraysDinamicos = Object.keys(groupedData).map((medico,i) => {
+        return {
+          label: medico, // Nome do médico
+          data: groupedData[medico].map((atendimento: any) => atendimento.total_contador), // Somente os valores de atendimento (sum)
+          backgroundColor: globalCores.gbCores[i], // Cor de fundo
+          borderColor: globalCores.gbCores[i], // Cor da borda
+          borderWidth: 1, // Largura da borda
+        };
+      });
+
+
+
+
+      // Chamando a função para gerar o gráfico
+      // console.log(arraysDinamicos)
+      this._chart(semana, arraysDinamicos);
     });
   }
 
-  createChart(groupedData: any) {
-    const labels = Object.keys(groupedData);
-    const data = labels.map(label => groupedData[label].length);
+  _chart(labels: any, datasets: any) {
+    let chartExist = Chart.getChart("_chart"); // <canvas> id
+    if (chartExist != undefined) chartExist.destroy();
 
-    const ctx = document.getElementById('myChart') as HTMLCanvasElement;
-
-    if (this.chart) {
-      this.chart.destroy(); // Destroy existing chart instance if any
-    }
-
-    if (this.chart) {
-      this.chart.destroy();
-      this.chart = undefined;
-    }
-
-    this.chart = new Chart(ctx, {
+    const myChart = new Chart("_chart", {
       type: 'bar',
       data: {
-        labels: labels,
-        datasets: [{
-          label: 'Número de Atendimentos',
-          data: data,
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1
-        }]
+        labels: labels, // Os dias da semana
+        datasets: datasets // Os conjuntos de dados dinamicamente criados
       },
       options: {
-        scales: {
-          x: {
-            beginAtZero: true
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
           },
+          title: {
+            display: true,
+            text: 'Atendimentos por Dia da Semana'
+          }
+        },
+        scales: {
           y: {
             beginAtZero: true
           }
@@ -87,6 +131,10 @@ export class AtendMapaCalorSemanaComponent implements OnInit,AfterViewInit {
       }
     });
   }
+
+
+
+
 }
 
 /*ABAIXO TEM UM MAPA DE CALOR COMO SE FOSSE DO GIT HUB

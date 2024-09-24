@@ -1,6 +1,8 @@
+
+
 .card {
   display: flex;
-  align-items: center; /* Alinha o ícone e o conteúdo verticalmente */
+  align-items: left; /* Alinha o ícone e o conteúdo verticalmente */
 }
 
 .icon-wrapper {
@@ -23,7 +25,7 @@
   height: 100%;
   border-radius: 50%; /* Deixar o círculo perfeito */
   z-index: 1;
-  background-color: #107ef4; /* Defina a cor desejada aqui */
+  background-color: #03de36; /* Defina a cor desejada aqui */
 }
 
 .opacity-10 {
@@ -47,4 +49,40 @@
 
 .widget-chart-content {
   display: inline-block;
+}
+
+/* __________ L O G O   S L I D E R __________ */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-25% * var(--number-of-items)*0.75)); /* Total de itens */
+  }
+}
+
+.partners-logo-slider {
+  height: auto;
+  margin: auto;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  background-color: #ffffff;
+}
+
+.slide-track {
+  display: flex;
+  animation: scroll calc(3s * var(--number-of-items)) linear infinite;
+  width: calc(50px * var(--number-of-items)); /* Ajuste para o total */
+}
+
+.slide {
+  height: 80px;
+  width: 25%; /* Largura fixa de cada slide */
+  filter: grayscale(100%);
+  flex-shrink: 0; /* Para evitar que os itens encolham */
+}
+
+.slide:hover {
+  filter: grayscale(0%);
 }
