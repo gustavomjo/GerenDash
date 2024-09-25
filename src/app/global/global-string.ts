@@ -103,10 +103,10 @@ export function isName(str: string): boolean {
   }
 
   const isValidName = validChars && reasonableLength && hasTwoValidParts;
-  if (!isValidName) {
-    console.log('Resultado final:', isValidName);
-    console.log(normalizedStr)
-  }
+  // if (!isValidName) {
+  //   console.log('Resultado final:', isValidName);
+  //   console.log(normalizedStr)
+  // }
   return isValidName;
 }
 

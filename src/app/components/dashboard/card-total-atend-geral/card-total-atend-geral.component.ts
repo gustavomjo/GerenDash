@@ -8,6 +8,7 @@ import { lpad } from '../../../global/global-string';
 import { searchIco } from '../../../global/global-icons';
 import { CommonModule } from '@angular/common';
 import { tot_atend_clinica_medico_dia } from '../../../models/dashboard/tot-atend-clinica-medico-dia.model';
+import { globalCores, globalCoresNome } from '../../../global/global-cores';
 
 @Component({
   selector: 'app-card-total-atend-geral',
@@ -20,8 +21,22 @@ import { tot_atend_clinica_medico_dia } from '../../../models/dashboard/tot-aten
 })
 export class CardTotalAtendGeralComponent implements OnInit {
   cardTotalAtendGeral: tot_atend_clinica_medico_dia[] = [];
-  groupedMedico: { [key: string]: { medico: string; total: number; items: tot_atend_clinica_medico_dia[] } } = {};
+
+  groupedMedico: { [key: string]: {
+    total_passado: any;
+    porcent: any;
+    medico: string;
+    total: number;
+  } } = {};
+
+  color = globalCoresNome;
+
+  mes_ano = globalData.gbMeses[Number(globalData.gbMes_atual)-1]+'/'+globalData.gbAno;
+  mes_ano_passado = globalData.gbMeses[Number(globalData.gbMes_atual)-1]+'/'+Number(globalData.gbAno-1);
+
   totalGeral: number = 0;
+  totalGeral_passado: number = 0;
+  porcent: number = 0;
 
   constructor(private dashboardService: DashboardService) {}
 
@@ -35,6 +50,10 @@ export class CardTotalAtendGeralComponent implements OnInit {
         if (response && response.body) {
           this.cardTotalAtendGeral = response.body;
           this.aggregateData();
+
+          this.porcent = (this.totalGeral*100)/this.totalGeral_passado
+          this.porcent = Number(this.porcent.toFixed(2))
+
           this.calculateSlideTrackWidth(); // Recalcula a largura da pista de deslizamento
         } else {
           console.error('A resposta não contém os dados esperados:', response);
@@ -48,6 +67,7 @@ export class CardTotalAtendGeralComponent implements OnInit {
 
   aggregateData() {
     const mesAnoAtual = `${globalData.gbAno}-${lpad(String(Number(globalData.gbMes_atual)), 2, '0')}`;
+    const mesAnoPassado = `${globalData.gbAno-1}-${lpad(String(Number(globalData.gbMes_atual)), 2, '0')}`;
     this.totalGeral = 0;
 
     this.groupedMedico = this.cardTotalAtendGeral.reduce((acc: any, item) => {
@@ -56,13 +76,34 @@ export class CardTotalAtendGeralComponent implements OnInit {
 
       if (mesAnoBd === mesAnoAtual) {
         if (!acc[medico]) {
-          acc[medico] = { medico, total: 0, items: [] };
+          acc[medico] = { medico, total: 0, total_passado : 0, porcent : 0 };
         }
-
-        acc[medico].items.push(item);
         acc[medico].total += item.total;
         this.totalGeral += item.total;
+        if(acc[medico].total_passado>0)
+          acc[medico].porcent = Number( (acc[medico].total *100)/acc[medico].total_passado ).toFixed(2)
+        else
+          acc[medico].porcent = Number( (acc[medico].total *100) ).toFixed(2)
+
+        if(acc[medico].medico === 'ALANNA AJZENTAL E CAMARGO')
+          console.log(acc[medico])
       }
+      else if (mesAnoBd == mesAnoPassado){
+        if (!acc[medico]) {
+          acc[medico] = { medico, total: 0, total_passado : 0, porcent : 0 };
+        }
+        acc[medico].total_passado += item.total;
+        this.totalGeral_passado += item.total;
+        if(acc[medico].total_passado>0)
+          acc[medico].porcent = Number( (acc[medico].total *100)/acc[medico].total_passado ).toFixed(2)
+        else
+          acc[medico].porcent = Number( (acc[medico].total *100) ).toFixed(2)
+
+        if(acc[medico].medico === 'ALANNA AJZENTAL E CAMARGO')
+          console.log(acc[medico])
+
+      }
+
       return acc;
     }, {});
   }
@@ -73,7 +114,6 @@ export class CardTotalAtendGeralComponent implements OnInit {
   }
 
   getMedicoIcon(medico: string): string {
-    // console.log(searchIco(medico))
     return searchIco(medico);
   }
 

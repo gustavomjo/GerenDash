@@ -1,14 +1,4 @@
 
-
-<!-- <i class='bx bx-heart' style='font-size: 24px; color: #007bff;'></i>
-<i class='bx bx-run' style='font-size: 24px; color: #007bff;'></i>
-<i class="fas fa-heartbeat" style="font-size: 24px; color: #007bff;"></i>
-<i class="fas fa-running" style="font-size: 24px; color: #007bff;"></i> -->
-
-
-
-
-
 <section class="row no-gutters" id="cards" *ngIf="!shouldSlide()">
   <!-- Cash Deposits -->
   <article class="col-sm-6 col-md-4" *ngFor="let entry of groupedMedico | keyvalue">
@@ -16,34 +6,89 @@
       <div class="rm-border bg-transparent widget-chart text-left d-flex align-items-center">
         <div class="icon-wrapper rounded-circle mr-3">
           <div class="icon-wrapper-bg opacity-10"></div>
-          <i [ngClass]="getMedicoIcon(entry.value.medico)" class="text-dark opacity-8"></i>
+          <i [ngClass]="getMedicoIcon(entry.value.medico)" class="title opacity-8"></i>
         </div>
         <div class="widget-chart-content">
-          <h4 class="widget-subheading">{{ entry.value.medico }}</h4>
-          <h3 class="widget-numbers">{{ entry.value.total }}</h3>
+          <h4 class="widget-subheading title">{{ entry.value.medico }}</h4>
+          <h3 class="widget-numbers title">{{ entry.value.total }}</h3>
         </div>
       </div>
     </div>
   </article>
-
 </section>
 
 <div class="partners-logo-slider" *ngIf="shouldSlide()">
-  <!-- <p class="sliderTitle">Trusted by 200,000+ leading organizations</p> -->
   <div class="slide-track" id="dvSlide">
     <div *ngFor="let medico of groupedMedico | keyvalue" class="col-2" [ngClass]="{'slide': shouldSlide()}">
       <div class="rm-border bg-transparent widget-chart text-left d-flex align-items-center">
-        <div class=" icon-wrapper rounded-circle mr-3">
+        <div class="icon-wrapper rounded-circle mr-3">
           <div class="icon-wrapper-bg opacity-10"></div>
-          <i [ngClass]="getMedicoIcon(medico.value.medico)" class="text-dark opacity-8"></i>
+          <i [ngClass]="getMedicoIcon(medico.value.medico)" class="opacity-8" [style.color]="color.colorGray"></i>
         </div>
         <div class="widget-chart-content">
-          <h4 class="widget-subheading">{{ medico.value.medico }}</h4>
-          <h3 class="widget-numbers">{{ medico.value.total }}</h3>
+          <h4 class="widget-subheading" [style.color]="color.colorGray">{{ medico.value.medico }}</h4>
+          <div class="widget-container">
+            <p class="widget-title" [style.color]="color.colorGray">{{mes_ano}} :</p>
+            <p class="widget-numbers" [style.color]="color.colorBlue"> {{ medico.value.total }} </p>
+
+            <p class="widget-title" [style.color]="color.colorGray"> {{mes_ano_passado}}  : </p>
+            <p class="widget-numbers" [style.color]="color.colorBlue"> {{ medico.value.total_passado }} </p>
+
+            <p class="widget-numbers" [style.color]="medico.value.porcent > 100 ? color.colorBlue : color.colorRed">
+              {{medico.value.porcent}}%
+              <i class='bx' [style.color]="medico.value.porcent > 100 ? color.colorBlue : color.colorRed"
+                [ngClass]="medico.value.porcent > 100 ? 'bx-chevron-up' : 'bx-chevron-down'"
+                ></i>
+            </p>
+          </div>
         </div>
+      </div>
+    </div>
+    <!-- Duplicando os itens para garantir continuidade no slide -->
+    <div *ngFor="let medico of groupedMedico | keyvalue" class="col-2" [ngClass]="{'slide': shouldSlide()}">
+      <div class="rm-border bg-transparent widget-chart text-left d-flex align-items-center">
+        <div class="icon-wrapper rounded-circle mr-3">
+          <div class="icon-wrapper-bg opacity-10"></div>
+          <i [ngClass]="getMedicoIcon(medico.value.medico)" class="opacity-8" [style.color]="color.colorGray"></i>
+        </div>
+        <div class="widget-chart-content">
+          <h4 class="widget-subheading" [style.color]="color.colorGray">{{ medico.value.medico }}</h4>
+          <div class="widget-container">
+            <p class="widget-title" [style.color]="color.colorGray">{{mes_ano}} :</p>
+            <p class="widget-numbers" [style.color]="color.colorBlue"> {{ medico.value.total }} </p>
+
+            <p class="widget-title" [style.color]="color.colorGray"> {{mes_ano_passado}}  : </p>
+            <p class="widget-numbers" [style.color]="color.colorBlue"> {{ medico.value.total_passado }} </p>
+
+            <p class="widget-numbers" [style.color]="medico.value.porcent > 100 ? color.colorBlue : color.colorRed">
+              {{medico.value.porcent}}%
+              <i class='bx' [style.color]="medico.value.porcent > 100 ? color.colorBlue : color.colorRed"
+                [ngClass]="medico.value.porcent > 100 ? 'bx-chevron-up' : 'bx-chevron-down'"
+                ></i>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center align-items-center">
+    <div class="widget-chart-content">
+      <div class="widget-container">
+        <p class="widget-title" [style.color]="color.colorGray">Total {{mes_ano}} :</p>
+        <p class="widget-numbers" [style.color]="color.colorBlue"> {{ totalGeral }} </p>
+        <p class="widget-title" [style.color]="color.colorGray">Total {{mes_ano_passado}} :</p>
+        <p class="widget-numbers" [style.color]="color.colorBlue"> {{ totalGeral_passado }} </p>
+        <p class="widget-numbers" [style.color]="porcent > 100 ? color.colorBlue : color.colorRed">
+          {{porcent}}%
+          <i class='bx' [style.color]="porcent > 100 ? color.colorBlue : color.colorRed"
+            [ngClass]="porcent > 100 ? 'bx-chevron-up' : 'bx-chevron-down'"
+            ></i>
+        </p>
+
       </div>
     </div>
 
   </div>
+
 </div>
 
