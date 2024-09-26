@@ -18,15 +18,15 @@
 </section>
 
 <div class="partners-logo-slider" *ngIf="shouldSlide()">
-  <div class="slide-track" id="dvSlide">
-    <div *ngFor="let medico of groupedMedico | keyvalue" class="col-2" [ngClass]="{'slide': shouldSlide()}">
+  <div class="slide-track " id="dvSlide">
+    <div *ngFor="let medico of groupedMedico | keyvalue"  [ngClass]="{'slide': shouldSlide()}">
       <div class="rm-border bg-transparent widget-chart text-left d-flex align-items-center">
-        <div class="icon-wrapper rounded-circle mr-3">
+        <div class="icon-wrapper rounded-circle mr-3 ">
           <div class="icon-wrapper-bg opacity-10"></div>
           <i [ngClass]="getMedicoIcon(medico.value.medico)" class="opacity-8" [style.color]="color.colorGray"></i>
         </div>
-        <div class="widget-chart-content">
-          <h4 class="widget-subheading" [style.color]="color.colorGray">{{ medico.value.medico }}</h4>
+        <div class="widget-chart-content  ">
+          <h4 class="widget-subheading " [style.color]="color.colorGray">{{ medico.value.medico }}</h4>
           <div class="widget-container">
             <p class="widget-title" [style.color]="color.colorGray">{{mes_ano}} :</p>
             <p class="widget-numbers" [style.color]="color.colorBlue"> {{ medico.value.total }} </p>

@@ -100,18 +100,16 @@
 .slide-track {
   display: flex;
   animation: scroll calc(6s * var(--number-of-items)) linear infinite;
-  width: calc(50px * var(--number-of-items)); /* Ajuste para o total */
 }
 
 .slide {
   height: 80px;
-  width: 25%; /* Largura fixa de cada slide */
   // filter: grayscale(100%);
   flex-shrink: 0; /* Para evitar que os itens encolham */
 }
 
 .slide:hover {
-  // filter: grayscale(0%);
+  cursor:pointer;
 }
 
 .partners-logo-slider:hover .slide-track {

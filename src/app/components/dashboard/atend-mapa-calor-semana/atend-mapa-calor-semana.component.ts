@@ -30,87 +30,52 @@ export class AtendMapaCalorSemanaComponent implements OnInit,AfterViewInit {
   }
   chart: Chart | undefined;
 
-
   async getAtendMapaCalorSemana() {
     (await this.Dashboard.getAtendMapaCalorSemana(globalVars.cookieValue)).subscribe(dados => {
-      // Concatena os dados recebidos ao mapa atual
+      // Atualiza o mapa com os dados recebidos
       this.mapa = this.mapa.concat(dados.body);
-      // Semana como labels do gráfico
-      // console.log(this.mapa)
 
-      // Definição da semana
-        const semana = [ 'Domingo', 'Segunda-feira', 'Terca-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sabado'];
+      // Definir todos os dias da semana para garantir que todos os dias sejam representados
+      const semana = ['Domingo', 'Segunda-feira', 'Terca-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sabado'];
 
-        // Criando o objeto agrupado por 'nome_medico'
-        const groupedData = this.mapa.reduce((acc: any, item) => {
-          const medico = item.nome_medico.trim(); // Remove espaços em branco do nome do médico
-          const diaSemana = item.nome_dia_semana.trim(); // Remove espaços em branco do nome do dia da semana
+      // Criar um objeto inicial de dias com total de contadores zerados
+      let diasDaSemana = semana.map((dia, index) => ({
+        nome_dia_semana: dia,
+        total_contador: 0,
+        dia_semana: index + 1
+      }));
 
-          if (!acc[medico]) {
-            acc[medico] = [];
-          }
-          acc[medico].push({
-            ...item,
-            nome_dia_semana: diaSemana // Remove espaços em branco do nome do dia da semana
-          });
-          return acc;
-        }, {});
-
-        // Iterando sobre cada médico
-        Object.keys(groupedData).forEach(medico => {
-          const items = groupedData[medico];
-
-          // Cria um conjunto com os dias da semana presentes para o médico atual
-          const diasPresentes = new Set(items.map((item: { nome_dia_semana: string }) => item.nome_dia_semana));
-
-          // Adiciona os dias da semana ausentes
-          semana.forEach(dia => {
-            const trimmedDia = dia.trim(); // Remove espaços em branco do dia
-
-            if (!diasPresentes.has(trimmedDia)) {
-              // Adiciona um novo item com o dia ausente
-              items.push({
-                nome_dia_semana: trimmedDia,
-                nome_medico: medico,
-                dia_semana: semana.indexOf(trimmedDia),
-                total_contador: 0 // Valor padrão para 'total_contador'
-              });
-            }
-          });
-
-          // Ordena os itens conforme a semana
-          groupedData[medico] = items.sort((a: { dia_semana: number }, b: { dia_semana: number }) => a.dia_semana - b.dia_semana);
-        });
-
-      // Criando datasets dinâmicos para o Chart.js
-      const arraysDinamicos = Object.keys(groupedData).map((medico,i) => {
-        return {
-          label: medico, // Nome do médico
-          data: groupedData[medico].map((atendimento: any) => atendimento.total_contador), // Somente os valores de atendimento (sum)
-          backgroundColor: globalCores.gbCores[i], // Cor de fundo
-          borderColor: globalCores.gbCores[i], // Cor da borda
-          borderWidth: 1, // Largura da borda
-        };
+      // Atualizar os dias da semana com os dados recebidos
+      this.mapa.forEach(item => {
+        const diaIndex = diasDaSemana.findIndex(dia => dia.nome_dia_semana === item.nome_dia_semana);
+        if (diaIndex > -1) {
+          diasDaSemana[diaIndex].total_contador = item.total_contador;
+        }
       });
 
+      // Agora, preparar os dados para o gráfico: Um único dataset com todos os valores de atendimento
+      const mapa = [{
+        label: 'Atendimentos', // Rótulo para o dataset
+        data: diasDaSemana.map(item => item.total_contador), // Somente os valores de atendimento
+        backgroundColor: diasDaSemana.map((_, i) => globalCores.gbCores[i]), // Cores de fundo
+        borderColor: diasDaSemana.map((_, i) => globalCores.gbCores[i]), // Cores da borda
+        borderWidth: 1 // Largura da borda
+      }];
 
-
-
-      // Chamando a função para gerar o gráfico
-      // console.log(arraysDinamicos)
-      this._chart(semana, arraysDinamicos);
+      // Chama o gráfico com a semana completa
+      this._chart(semana, mapa);
     });
   }
 
   _chart(labels: any, datasets: any) {
     let chartExist = Chart.getChart("_chart"); // <canvas> id
-    if (chartExist != undefined) chartExist.destroy();
+    if (chartExist) chartExist.destroy(); // Destrói o gráfico existente, se houver
 
     const myChart = new Chart("_chart", {
       type: 'bar',
       data: {
         labels: labels, // Os dias da semana
-        datasets: datasets // Os conjuntos de dados dinamicamente criados
+        datasets: datasets // Um único conjunto de dados para todas as barras
       },
       options: {
         responsive: true,
@@ -120,7 +85,7 @@ export class AtendMapaCalorSemanaComponent implements OnInit,AfterViewInit {
           },
           title: {
             display: true,
-            text: 'Atendimentos por Dia da Semana'
+            text: 'Mapa de calor dos próximos atendimentos'
           }
         },
         scales: {
@@ -131,8 +96,6 @@ export class AtendMapaCalorSemanaComponent implements OnInit,AfterViewInit {
       }
     });
   }
-
-
 
 
 }

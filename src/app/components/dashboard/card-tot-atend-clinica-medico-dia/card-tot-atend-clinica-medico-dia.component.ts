@@ -186,6 +186,15 @@ export class CardTotAtendClinicaMedicoDiaComponent implements OnInit{
       },
       options: {
         responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Comparativo de atendimentos'
+          }
+        },
         scales: {
           y: {
             beginAtZero: true

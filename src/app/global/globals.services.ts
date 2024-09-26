@@ -31,6 +31,7 @@ export class Busca {
     return this.configService.getConfig().pipe(
       switchMap(config => {
         this.url = config.servidor;
+        // console.log(this.header)
         return this.httpClient.get<T>(this.url + request, { headers: this.header, observe: 'response' }).pipe(
           tap(response => {
             this.token = localStorage.getItem('token');
@@ -118,6 +119,7 @@ export class Busca {
   }
 
   private updateHeader(token: string | null = this.token) {
+    // console.log(token)
     this.header = new HttpHeaders({
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/x-www-form-urlencoded'

@@ -44,6 +44,8 @@ export class CardTotalAtendGeralComponent implements OnInit {
     this.getTotAtendClinicaMedicoDia();
   }
 
+
+
   async getTotAtendClinicaMedicoDia() {
     (await this.dashboardService.getTotAtendClinicaMedicoDia(globalVars.cookieValue)).subscribe({
       next: (response) => {
@@ -84,9 +86,6 @@ export class CardTotalAtendGeralComponent implements OnInit {
           acc[medico].porcent = Number( (acc[medico].total *100)/acc[medico].total_passado ).toFixed(2)
         else
           acc[medico].porcent = Number( (acc[medico].total *100) ).toFixed(2)
-
-        if(acc[medico].medico === 'ALANNA AJZENTAL E CAMARGO')
-          console.log(acc[medico])
       }
       else if (mesAnoBd == mesAnoPassado){
         if (!acc[medico]) {
@@ -99,11 +98,8 @@ export class CardTotalAtendGeralComponent implements OnInit {
         else
           acc[medico].porcent = Number( (acc[medico].total *100) ).toFixed(2)
 
-        if(acc[medico].medico === 'ALANNA AJZENTAL E CAMARGO')
-          console.log(acc[medico])
 
       }
-
       return acc;
     }, {});
   }
