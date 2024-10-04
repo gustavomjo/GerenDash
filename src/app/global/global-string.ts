@@ -18,10 +18,10 @@ export function lpad(str: string, length: number, padChar: string = ' '): string
   return padding.slice(0, padLength) + str;
 }
 
+// Função Levenshtein para calcular a distância
 function levenshtein(a: string, b: string): number {
   const matrix = [];
 
-  // Inicia a primeira linha e coluna da matriz
   for (let i = 0; i <= b.length; i++) {
     matrix[i] = [i];
   }
@@ -29,49 +29,58 @@ function levenshtein(a: string, b: string): number {
     matrix[0][j] = j;
   }
 
-  // Preenche a matriz com os custos das operações
   for (let i = 1; i <= b.length; i++) {
     for (let j = 1; j <= a.length; j++) {
       if (b.charAt(i - 1) === a.charAt(j - 1)) {
-        matrix[i][j] = matrix[i - 1][j - 1]; // Não há custo se as letras forem iguais
+        matrix[i][j] = matrix[i - 1][j - 1];
       } else {
         matrix[i][j] = Math.min(
-          matrix[i - 1][j - 1] + 1, // Substituição
-          matrix[i][j - 1] + 1,     // Inserção
-          matrix[i - 1][j] + 1      // Remoção
+          matrix[i - 1][j - 1] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j] + 1
         );
       }
     }
   }
 
-  // Retorna o número de operações (distância de edição)
   return matrix[b.length][a.length];
 }
 
+// Função para calcular a porcentagem de similaridade entre palavras
 export function similarityPercentage(word1: string, word2: string): number {
-   // Função auxiliar para normalizar strings, removendo espaços e caracteres especiais
-  const normalize = (str: string) =>
-    str.toLowerCase().replace(/[^a-zA-Z0-9]/g, '');
+  // Normaliza as palavras
+  const normalize = (str: string) => str.toLowerCase().replace(/[^a-zA-Z0-9]/g, '');
 
   const normalizedWord1 = normalize(word1);
   const normalizedWord2 = normalize(word2);
 
-  const maxLen = Math.max(normalizedWord1.length, normalizedWord2.length);
+  // Divide as palavras em arrays
+  const words1 = normalizedWord1.split(' ');
+  const words2 = normalizedWord2.split(' ');
 
-  // Se ambas palavras forem iguais, 100% de semelhança
-  if (maxLen === 0) return 100;
+  // Calcula a similaridade média entre todas as palavras
+  let totalSimilarity = 0;
+  let count = 0;
 
-  const levDistance = levenshtein(normalizedWord1, normalizedWord2);
+  words1.forEach(word1 => {
+    words2.forEach(word2 => {
+      const levDistance = levenshtein(word1, word2);
+      const maxLen = Math.max(word1.length, word2.length);
 
-  // Se a distância for muito grande em relação ao tamanho da palavra, considera-se 0% similaridade
-  if (levDistance > maxLen / 2) {
-    return 0;
-  }
+      // Calcula a porcentagem de similaridade para cada par de palavras
+      if (maxLen > 0) {
+        const similarity = ((maxLen - levDistance) / maxLen) * 100;
+        totalSimilarity += similarity;
+        count++;
+      }
+    });
+  });
 
-  // Calcula a porcentagem de semelhança
-  const similarity = ((maxLen - levDistance) / maxLen) * 100;
-  return Math.round(similarity * 100) / 100; // Arredondado para 2 casas decimais
+  // Retorna a média da similaridade
+  return count > 0 ? Math.round((totalSimilarity / count) * 100) / 100 : 0;
 }
+
+
 
 const excludedWords = [
   'teste', 'exame', 'procedimento', 'diagnostico', 'consulta', 'ergometrico', 'ultrassom',
@@ -91,8 +100,11 @@ export function isName(str: string): boolean {
 
   const reasonableLength = normalizedStr.length >= 2 && normalizedStr.length <= 100;
   const parts = normalizedStr.split(/\s+/);
-  const hasTwoValidParts = parts.length >= 1;
-  const validChars = /^[\p{L} '-]+$/u.test(normalizedStr);
+
+  // Permitir abreviações como "L." e "T."
+  const hasTwoValidParts = parts.length >= 2 || parts.some(part => part.length === 2 && part.endsWith('.'));
+
+  const validChars = /^[\p{L} '-.]+$/u.test(normalizedStr); // Permitir ponto nas verificações
 
   const containsExcludedWords = excludedWords.some(word =>
     new RegExp(`\\b${word}\\b`, 'i').test(normalizedStr)
@@ -103,10 +115,6 @@ export function isName(str: string): boolean {
   }
 
   const isValidName = validChars && reasonableLength && hasTwoValidParts;
-  // if (!isValidName) {
-  //   console.log('Resultado final:', isValidName);
-  //   console.log(normalizedStr)
-  // }
   return isValidName;
 }
 

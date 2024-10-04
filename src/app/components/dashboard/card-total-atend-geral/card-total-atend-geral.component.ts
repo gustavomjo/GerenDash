@@ -51,7 +51,7 @@ export class CardTotalAtendGeralComponent implements OnInit {
       next: (response) => {
         if (response && response.body) {
           this.cardTotalAtendGeral = response.body;
-          console.log(this.cardTotalAtendGeral)
+          // console.log(this.cardTotalAtendGeral)
           this.aggregateData();
 
           this.porcent = (this.totalGeral*100)/this.totalGeral_passado

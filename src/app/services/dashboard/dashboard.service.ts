@@ -6,6 +6,7 @@ import { tot_atend_clinica_medico_dia } from '../../models/dashboard/tot-atend-c
 import { Busca } from '../../global/globals.services';
 import { atend_mapa_calor_semana } from '../../models/dashboard/atend-mapa-calor-semana.model';
 import { atend_mapa_calor_horario } from '../../models/dashboard/atend-mapa-calor-horario.model';
+import { total_atendimento } from '../../models/dashboard/total-atendimento.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +37,11 @@ export class DashboardService {
   async getAtendMapaCalorHorario(chave: string) {
     // console.log(this.url)
     return await this.Busca.getHtml<atend_mapa_calor_horario[]>(`/getAtendMapaCalorHorario/${chave}`);
+  }
+
+  async getTotalAtendimentos(chave: string) {
+    // console.log(this.url)
+    return await this.Busca.getHtml<total_atendimento[]>(`/getTotalAtendimentos/${chave}`);
   }
 
 }
